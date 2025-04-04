@@ -76,7 +76,7 @@ function M.toggle_todo()
 	vim.api.nvim_buf_set_option(buf, "bufhidden", "hide")
 	vim.api.nvim_buf_set_option(buf, "swapfile", false)
 	vim.api.nvim_buf_set_option(buf, "modified", false)
-	vim.api.nvim_buf_set_option(buf, "filetype", "md")
+	vim.api.nvim_buf_set_option(buf, "filetype", "markdown")
 	vim.api.nvim_buf_set_option(buf, "syntax", "markdown")
 
 	-- Read todo file
@@ -102,7 +102,7 @@ function M.toggle_todo()
 		buffer = buf,
 		callback = function()
 			local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
-			local todo_path = vim.fn.expand("~/.todo.md")
+			local todo_path = vim.fn.expand("~/md/todo.md")
 			local file = io.open(todo_path, "w")
 			if file then
 				file:write(table.concat(lines, "\n"))
@@ -131,7 +131,7 @@ function M.toggle_todo()
 	vim.api.nvim_win_set_option(win, "relativenumber", false)
 	vim.api.nvim_win_set_option(win, "wrap", true)
 	vim.api.nvim_win_set_option(win, "linebreak", true)
-	vim.api.nvim_win_set_option(win, "conceallevel", 2) -- Better markdown rendering
+	-- vim.api.nvim_win_set_option(win, "conceallevel", 2) -- Better markdown rendering
 
 	-- Setup completion
 	M.setup_completion(buf)
