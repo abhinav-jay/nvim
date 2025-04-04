@@ -77,6 +77,7 @@ function M.toggle_todo()
 	vim.api.nvim_buf_set_option(buf, "swapfile", false)
 	vim.api.nvim_buf_set_option(buf, "modified", false)
 	vim.api.nvim_buf_set_option(buf, "filetype", "md")
+	vim.api.nvim_buf_set_option(buf, "syntax", "markdown")
 
 	-- Read todo file
 	local todo_path = vim.fn.expand("~/md/todo.md")
@@ -101,7 +102,7 @@ function M.toggle_todo()
 		buffer = buf,
 		callback = function()
 			local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
-			local todo_path = vim.fn.expand("~/md/todo.md")
+			local todo_path = vim.fn.expand("~/.todo.md")
 			local file = io.open(todo_path, "w")
 			if file then
 				file:write(table.concat(lines, "\n"))

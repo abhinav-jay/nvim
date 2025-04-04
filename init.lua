@@ -764,6 +764,29 @@ require("lazy").setup({
 			require("todo-floater").setup()
 		end,
 	},
+
+	-- oil nvim
+	{
+		'stevearc/oil.nvim',
+		---@module 'oil'
+		---@type oil.SetupOpts
+		opts = {},
+		-- Optional dependencies
+		dependencies = { { "echasnovski/mini.icons", opts = {} } },
+		-- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
+		-- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
+		lazy = false,
+	},
+
+
+	-- -- rendering markdown
+	-- {
+	-- 	"iamcco/markdown-preview.nvim",
+	-- 	cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+	-- 	ft = { "markdown" },
+	-- 	build = function() vim.fn["mkdp#util#install"]() end,
+	-- },
+
 	--custom floating terminal
 
 	-- {
@@ -1203,3 +1226,5 @@ end
 
 -- Set the mapping (change <leader> to your actual leader key)
 vim.api.nvim_set_keymap("n", "<leader>tr", "<cmd>lua toggle_floating_term()<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+require("oil").setup()
