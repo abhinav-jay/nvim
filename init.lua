@@ -752,6 +752,14 @@ require("lazy").setup({
 	{
 		"todo-floater",
 		dir = "~/.config/nvim/lua", -- Points to directory containing the file
+		dependencies = {
+			"hrsh7th/nvim-cmp",
+			"hrsh7th/cmp-buffer",
+			"hrsh7th/cmp-path",
+			"hrsh7th/cmp-nvim-lsp",
+			"L3MON4D3/LuaSnip",
+			"saadparwaiz1/cmp_luasnip",
+		},
 		main = "todo-floater", -- Looks for todo-floater.lua
 		config = true, -- Automatically calls .setup()
 		-- config = function()      -- Alternative explicit config
