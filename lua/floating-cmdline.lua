@@ -10,10 +10,11 @@ local default_config = {
 	highlight = {
 		bg = "#1a1b26",
 		fg = "#c0caf5",
-		border = "#f7a237",
+		border = "#7aa2f7",
 	},
 	prompt = "  ",
-	auto_trigger = true, -- Enable automatic opening on ':'
+	auto_trigger = true,
+	enable_completion = true,
 }
 
 M.config = default_config
@@ -23,17 +24,28 @@ M.buf_id = nil
 function M.setup(user_config)
 	M.config = vim.tbl_deep_extend("force", default_config, user_config or {})
 
-	-- Set up autocommand if auto_trigger is enabled
 	if M.config.auto_trigger then
-		vim.api.nvim_create_autocmd("CmdlineEnter", {
-			pattern = ":",
-			callback = function()
-				if vim.fn.mode() == "n" then -- Only trigger in normal mode
-					M.open_floating_cmdline()
-				end
-			end,
-		})
+		vim.keymap.set("n", ":", function()
+			M.open_floating_cmdline()
+		end, { silent = true })
 	end
+end
+
+function M.setup_completion()
+	if not M.config.enable_completion then
+		return
+	end
+
+	-- Set up cmdline completion
+	local cmp = require("cmp")
+	cmp.setup.cmdline(":", {
+		sources = cmp.config.sources({
+			{ name = "cmdline" },
+			{ name = "path" },
+			{ name = "cmdline_history" },
+		}),
+		mapping = cmp.mapping.preset.cmdline(),
+	})
 end
 
 function M.open_floating_cmdline()
@@ -78,6 +90,11 @@ function M.open_floating_cmdline()
 		vim.api.nvim_command(text)
 	end)
 
+	-- Setup completion
+	if M.config.enable_completion then
+		M.setup_completion()
+	end
+
 	-- Auto-close on Escape
 	vim.keymap.set("i", "<Esc>", function()
 		if M.win_id and vim.api.nvim_win_is_valid(M.win_id) then
@@ -96,7 +113,7 @@ vim.api.nvim_set_hl(0, "FloatingCmdBorder", { fg = M.config.highlight.border })
 -- Keybinding to trigger the floating command line manually
 vim.api.nvim_set_keymap(
 	"n",
-	":",
+	"<leader>fc",
 	"<cmd>lua require('floating-cmdline').open_floating_cmdline()<CR>",
 	{ noremap = true, silent = true }
 )

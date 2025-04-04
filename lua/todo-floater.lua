@@ -1,5 +1,5 @@
--- File: ~/.config/nvim/lua/todo-floater.lua (or in your plugins directory)
 -- Usage: Press <leader>to to toggle the todo list
+--  the file is sourced from ~/.todo.md
 
 local M = {}
 
@@ -62,7 +62,7 @@ function M.toggle_todo()
 		vim.api.nvim_buf_set_option(buf, "swapfile", false)
 
 		-- Try to read the todo file
-		local todo_path = vim.fn.expand("~/md/todo.md")
+		local todo_path = vim.fn.expand("~/.todo.md")
 		local file = io.open(todo_path, "r")
 		if file then
 			local content = file:read("*a")
@@ -77,11 +77,11 @@ function M.toggle_todo()
 			buffer = buf,
 			callback = function()
 				local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
-				local todo_path = vim.fn.expand("~/md/todo.md")
+				local todo_path = vim.fn.expand("~/.todo.md")
 				local file = io.open(todo_path, "w")
 				if file then
 					file:write(table.concat(lines, "\n"))
-					file:close()
+					buffer:close()
 					vim.api.nvim_command("checktime") -- Refresh the buffer
 				else
 					vim.api.nvim_err_writeln("Could not save todo.md")

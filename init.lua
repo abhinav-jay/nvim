@@ -45,7 +45,6 @@ What is Kickstart?
 Kickstart Guide:
 
  TODO: The very first thing you should do is to run the command `:Tutor` in Neovim.
-
     If you don't know what this means, type the following:
       - <escape key>
       - :
@@ -750,26 +749,48 @@ require("lazy").setup({
 		end,
 	},
 	-- custon todo plugin
-	-- {
-	-- 	"todo-floater",
-	-- 	dir = "~/.config/nvim/lua", -- Points to directory containing the file
-	-- 	main = "todo-floater", -- Looks for todo-floater.lua
-	-- 	config = true, -- Automatically calls .setup()
-	-- 	-- config = function()      -- Alternative explicit config
-	-- 	--   require('todo-floater').setup()
-	-- 	-- end
-	-- },
 	{
-		"floating-cmdline",
-		dir = "~/.config/nvim/lua/",
-		main = "floating-cmdline.lua",
-		config = function()
-			require("floating-cmdline").setup({
-				-- Customize if needed
-				border = "rounded",
-				prompt = "  ",
-			})
-		end,
+		"todo-floater",
+		dir = "~/.config/nvim/lua", -- Points to directory containing the file
+		main = "todo-floater", -- Looks for todo-floater.lua
+		config = true, -- Automatically calls .setup()
+		-- config = function()      -- Alternative explicit config
+		--   require('todo-floater').setup()
+		-- end
+	},
+	-- {
+	-- 	"floating-cmdline",
+	-- 	dir = "~/.config/nvim/lua/",
+	-- 	main = "floating-cmdline.lua",
+	-- 	dependencies = {
+	-- 		"hrsh7th/nvim-cmp",
+	-- 		"hrsh7th/cmp-cmdline",
+	-- 		"hrsh7th/cmp-path",
+	-- 		"dmitmel/cmp-cmdline-history",
+	-- 	},
+	-- 	config = function()
+	-- 		require("floating-cmdline").setup({
+	-- 			-- Customize if needed
+	-- 			border = "rounded",
+	-- 			prompt = "  ",
+	-- 		})
+	-- 	end,
+	-- },
+	-- noice nvim for notifications and cmdline
+	{
+		"folke/noice.nvim",
+		event = "VeryLazy",
+		opts = {
+			-- add any options here
+		},
+		dependencies = {
+			-- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+			"MunifTanjim/nui.nvim",
+			-- OPTIONAL:
+			--   `nvim-notify` is only needed, if you want to use the notification view.
+			--   If not available, we use `mini` as the fallback
+			"rcarriga/nvim-notify",
+		},
 	},
 	-- Neotree (file tree)
 	{
@@ -1120,3 +1141,21 @@ require("lazy").setup({
 -- vim: ts=2 sts=2 sw=2 et
 -- start lualine
 require("lualine").setup()
+require("noice").setup({
+	lsp = {
+		-- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+		override = {
+			["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+			["vim.lsp.util.stylize_markdown"] = true,
+			["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
+		},
+	},
+	-- you can enable a preset for easier configuration
+	presets = {
+		bottom_search = true, -- use a classic bottom cmdline for search
+		command_palette = true, -- position the cmdline and popupmenu together
+		long_message_to_split = true, -- long messages will be sent to a split
+		inc_rename = false, -- enables an input dialog for inc-rename.nvim
+		lsp_doc_border = false, -- add a border to hover docs and signature help
+	},
+})
