@@ -760,12 +760,12 @@ require("lazy").setup({
 			"L3MON4D3/LuaSnip",
 			"saadparwaiz1/cmp_luasnip",
 		},
-		main = "todo-floater", -- Looks for todo-floater.lua
-		config = true, -- Automatically calls .setup()
-		-- config = function()      -- Alternative explicit config
-		--   require('todo-floater').setup()
-		-- end
+		config = function() -- Alternative explicit config
+			require("todo-floater").setup()
+		end,
 	},
+	--custom floating terminal
+
 	-- {
 	-- 	"floating-cmdline",
 	-- 	dir = "~/.config/nvim/lua/",
@@ -993,20 +993,16 @@ require("lazy").setup({
 		-- change the command in the config to whatever the name of that colorscheme is.
 		--
 		-- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-		"folke/tokyonight.nvim",
+		"Mofiqul/dracula.nvim",
 		priority = 1000, -- Make sure to load this before all the other start plugins.
 		config = function()
 			---@diagnostic disable-next-line: missing-fields
-			require("tokyonight").setup({
+			require("dracula").setup({
 				styles = {
 					comments = { italic = false }, -- Disable italics in comments
 				},
 			})
-
-			-- Load the colorscheme here.
-			-- Like many other themes, this one has different styles, and you could load
-			-- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-			vim.cmd.colorscheme("tokyonight-night")
+			vim.cmd.colorscheme("dracula")
 		end,
 	},
 
@@ -1167,3 +1163,43 @@ require("noice").setup({
 		lsp_doc_border = false, -- add a border to hover docs and signature help
 	},
 })
+
+local function toggle_floating_term()
+	if floating_term.win and vim.api.nvim_win_is_valid(floating_term.win) then
+		vim.api.nvim_win_close(floating_term.win, true)
+		floating_term.win = nil
+		floating_term.buf = nil
+	else
+		-- Calculate dimensions (60% of editor width and height)
+		local width = math.floor(vim.o.columns * 0.6)
+		local height = math.floor(vim.o.lines * 0.6)
+
+		-- Position the window in the middle
+		local col = math.floor((vim.o.columns - width) / 2)
+		local row = math.floor((vim.o.lines - height) / 2)
+
+		-- Create the floating window
+		floating_term.buf = vim.api.nvim_create_buf(false, true)
+		floating_term.win = vim.api.nvim_open_win(floating_term.buf, true, {
+			relative = "editor",
+			width = width,
+			height = height,
+			col = col,
+			row = row,
+			style = "minimal",
+			border = "rounded",
+		})
+
+		-- Open fish shell in the terminal
+		vim.fn.termopen("/usr/bin/fish")
+
+		-- Enter insert mode automatically
+		vim.cmd("startinsert")
+
+		-- Close terminal when fish exits
+		vim.api.nvim_buf_set_keymap(floating_term.buf, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
+	end
+end
+
+-- Set the mapping (change <leader> to your actual leader key)
+vim.api.nvim_set_keymap("n", "<leader>tr", "<cmd>lua toggle_floating_term()<CR>", { noremap = true, silent = true })

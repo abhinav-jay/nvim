@@ -76,6 +76,7 @@ function M.toggle_todo()
 	vim.api.nvim_buf_set_option(buf, "bufhidden", "hide")
 	vim.api.nvim_buf_set_option(buf, "swapfile", false)
 	vim.api.nvim_buf_set_option(buf, "modified", false)
+	vim.api.nvim_buf_set_option(buf, "filetype", "md")
 
 	-- Read todo file
 	local todo_path = vim.fn.expand("~/md/todo.md")
@@ -123,13 +124,13 @@ function M.toggle_todo()
 		border = "rounded",
 	}
 
-	win = vim.api.nvim_open_win(buf, true, opts)
-
 	-- Window options
+	win = vim.api.nvim_open_win(buf, true, opts)
 	vim.api.nvim_win_set_option(win, "number", true)
 	vim.api.nvim_win_set_option(win, "relativenumber", false)
 	vim.api.nvim_win_set_option(win, "wrap", true)
 	vim.api.nvim_win_set_option(win, "linebreak", true)
+	vim.api.nvim_win_set_option(win, "conceallevel", 2) -- Better markdown rendering
 
 	-- Setup completion
 	M.setup_completion(buf)
@@ -149,12 +150,6 @@ function M.toggle_todo()
 		':lua require("todo-floater").toggle_todo()<CR>',
 		{ noremap = true, silent = true }
 	)
-
-	-- Start in insert mode if empty
-	if vim.api.nvim_buf_line_count(buf) <= 3 then
-		vim.api.nvim_win_set_cursor(win, { 3, 0 })
-		vim.api.nvim_command("startinsert")
-	end
 end
 
 return M
