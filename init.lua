@@ -748,26 +748,9 @@ require("lazy").setup({
 			})
 		end,
 	},
-	-- custon todo plugin
-	{
-		"todo-floater",
-		dir = "~/.config/nvim/lua", -- Points to directory containing the file
-		dependencies = {
-			"hrsh7th/nvim-cmp",
-			"hrsh7th/cmp-buffer",
-			"hrsh7th/cmp-path",
-			"hrsh7th/cmp-nvim-lsp",
-			"L3MON4D3/LuaSnip",
-			"saadparwaiz1/cmp_luasnip",
-		},
-		config = function() -- Alternative explicit config
-			require("todo-floater").setup()
-		end,
-	},
-
 	-- oil nvim
 	{
-		'stevearc/oil.nvim',
+		"stevearc/oil.nvim",
 		---@module 'oil'
 		---@type oil.SetupOpts
 		opts = {},
@@ -777,7 +760,6 @@ require("lazy").setup({
 		-- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
 		lazy = false,
 	},
-
 
 	-- -- rendering markdown
 	-- {
@@ -1228,3 +1210,10 @@ end
 vim.api.nvim_set_keymap("n", "<leader>tr", "<cmd>lua toggle_floating_term()<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 require("oil").setup()
+--[[ custom todo plugin
+ NOTE: The keybindings are:
+ <leader>tda to add an item
+ <leader>tds to show most important item
+ <leader>tdr to remove the most important item 
+]]
+require("todo").setup()
