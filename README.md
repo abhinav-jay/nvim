@@ -11,7 +11,9 @@ These are my neovim config files.
 # installation
 If the folder is empty, you can install it in one command:
 
-`git clone https://github.com/abhinav-jay/nvim-config.git ~/.config/nvim`
+```bash
+git clone https://github.com/abhinav-jay/nvim-config.git ~/.config/nvim
+```
 
 Otherwise, you will have to do this:
 
