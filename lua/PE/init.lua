@@ -5,7 +5,7 @@ local M = {}
 
 function M.setup()
 	-- Set up the keymap
-	vim.keymap.set("n", "<leader>pe", require("PE.main").main(), {
+	vim.keymap.set("n", "<leader>pe", require("PE.floaterm").main(), {
 		desc = "project euler plugin start",
 	})
 end
