@@ -15,9 +15,10 @@ If the folder is empty, you can install it in one command:
 
 Otherwise, you will have to do this:
 
-`rm -rf ~/.config/nvim/
-
-git clone https://github.com/abhinav-jay/nvim-config.git ~/.config/nvim`
+```bash
+rm -rf ~/.config/nvim/
+git clone https://github.com/abhinav-jay/nvim-config.git ~/.config/nvim
+```
 
 ## Notes
 The todo list is located in a file called ~/.config/nvim/lua/todo/data.json.
