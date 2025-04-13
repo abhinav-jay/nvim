@@ -1216,5 +1216,5 @@ require("oil").setup()
  <leader>tds to show most important item
  <leader>tdr to remove the most important item 
 ]]
-require("todo").setup()
+require("todo")
 -- require("PE").setup()
