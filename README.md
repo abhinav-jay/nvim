@@ -20,6 +20,7 @@ Otherwise, you will have to do this:
 ```bash
 rm -rf ~/.config/nvim/
 git clone https://github.com/abhinav-jay/nvim-config.git ~/.config/nvim
+touch ~/.config/nvim/lua/todo/todo.txt
 ```
 
 ## Notes
