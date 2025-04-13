@@ -993,24 +993,15 @@ require("lazy").setup({
 		end,
 	},
 
-	{ -- You can easily change to a different colorscheme.
-		-- Change the name of the colorscheme plugin below, and then
-		-- change the command in the config to whatever the name of that colorscheme is.
-		--
-		-- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-		"Mofiqul/dracula.nvim",
-		priority = 1000, -- Make sure to load this before all the other start plugins.
+	{
+		"folke/tokyonight.nvim",
+		lazy = false,
+		priority = 1000,
+		opts = {},
 		config = function()
-			---@diagnostic disable-next-line: missing-fields
-			require("dracula").setup({
-				styles = {
-					comments = { italic = false }, -- Disable italics in comments
-				},
-			})
-			vim.cmd.colorscheme("dracula")
+			vim.cmd([[colorscheme tokyonight]])
 		end,
 	},
-
 	-- Highlight todo, notes, etc in comments
 	{
 		"folke/todo-comments.nvim",
