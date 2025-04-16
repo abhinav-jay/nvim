@@ -427,11 +427,11 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>fk", builtin.keymaps, { desc = "[S]earch [K]eymaps" })
 			vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "[S]earch [F]iles" })
 			vim.keymap.set("n", "<leader>ss", builtin.builtin, { desc = "[S]earch [S]elect Telescope" })
-			vim.keymap.set("n", "<leader>sw", builtin.grep_string, { desc = "[S]earch current [W]ord" })
-			vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "[S]earch by [G]rep" })
+			vim.keymap.set("n", "<leader>sw", builtin.grep_string, { desc = "[F]ind current [W]ord" })
+			vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "[F]ind by [G]rep" })
 			vim.keymap.set("n", "<leader>sd", builtin.diagnostics, { desc = "[S]earch [D]iagnostics" })
 			vim.keymap.set("n", "<leader>sr", builtin.resume, { desc = "[S]earch [R]esume" })
-			vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
+			vim.keymap.set("n", "<leader>fh", builtin.oldfiles, { desc = '[F]earch [H]istory ("." for repeat)' })
 			vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
 
 			-- Slightly advanced example of overriding default behavior and theme
@@ -1169,45 +1169,6 @@ require("noice").setup({
 	},
 })
 
-local function toggle_floating_term()
-	if floating_term.win and vim.api.nvim_win_is_valid(floating_term.win) then
-		vim.api.nvim_win_close(floating_term.win, true)
-		floating_term.win = nil
-		floating_term.buf = nil
-	else
-		-- Calculate dimensions (60% of editor width and height)
-		local width = math.floor(vim.o.columns * 0.6)
-		local height = math.floor(vim.o.lines * 0.6)
-
-		-- Position the window in the middle
-		local col = math.floor((vim.o.columns - width) / 2)
-		local row = math.floor((vim.o.lines - height) / 2)
-
-		-- Create the floating window
-		floating_term.buf = vim.api.nvim_create_buf(false, true)
-		floating_term.win = vim.api.nvim_open_win(floating_term.buf, true, {
-			relative = "editor",
-			width = width,
-			height = height,
-			col = col,
-			row = row,
-			style = "minimal",
-			border = "rounded",
-		})
-
-		-- Open fish shell in the terminal
-		vim.fn.termopen("/usr/bin/fish")
-
-		-- Enter insert mode automatically
-		vim.cmd("startinsert")
-
-		-- Close terminal when fish exits
-		vim.api.nvim_buf_set_keymap(floating_term.buf, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
-	end
-end
-
--- Set the mapping (change <leader> to your actual leader key)
-vim.api.nvim_set_keymap("n", "<leader>tr", "<cmd>lua toggle_floating_term()<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 require("oil").setup()
 --[[ custom todo plugin
@@ -1217,4 +1178,4 @@ require("oil").setup()
  <leader>tdr to remove the most important item 
 ]]
 require("todo")
--- require("PE").setup()
+require("PE").setup()
